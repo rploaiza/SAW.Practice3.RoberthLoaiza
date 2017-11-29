@@ -1,13 +1,19 @@
 <?php
 include ("includes/abrirbd.php");
 
-$sql = "SELECT * FROM productos WHERE nombre ='{$_GET['nombre']}'";
-if (!$resultado = mysqli_query($link, $sql)) {
-    header("Location:error.html");
-    exit;
-}
-?>
-<html>
+if (is_string($_GET['nombre'])&& (preg_match('/^[A-z0-9-_\s]+$/', $_GET['nombre']) === 1)) {
+    $conexion = new mysqli('localhost', 'root', '', 'tienda');
+    $val = mysqli_real_escape_string($link, $_GET['nombre']);
+    $sentencia = $conexion->prepare('SELECT * FROM productos WHERE nombre = ?');
+    $sentencia->bind_param('s', $val);
+    $sentencia->execute();
+    $resultado = $sentencia->get_result();
+
+    if (!$resultado) {
+        header("Location:error.html");
+        exit;
+    }?>
+    <html>
     <head> 
         <title> Ver Productos </title>
         <meta charset="UTF-8">
@@ -30,3 +36,8 @@ if (!$resultado = mysqli_query($link, $sql)) {
         ?>
     </body>
 </html>
+    
+    <?php
+}else
+echo "Producto Incorrecto.";
+?>

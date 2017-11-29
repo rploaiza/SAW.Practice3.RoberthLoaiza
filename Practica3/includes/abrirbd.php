@@ -1,7 +1,7 @@
 <?php
     $dbhost = 'localhost';
-    $dbuser = 'root';
-    $dbpass = '';
+    $dbuser = 'prod';
+    $dbpass = '*miw_nov2017*';
     $dbname = 'tienda';
 
 	$driver = new mysqli_driver();
